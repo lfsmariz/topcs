@@ -5,8 +5,6 @@ import { UpdatePlayerDto } from './dto/update-player.dto';
 
 @Injectable()
 export class PlayerService {
-  constructor(private prisma: PrismaService) {}
-
   create(createPlayerDto: CreatePlayerDto) {
     return 'This action adds a new player';
   }
