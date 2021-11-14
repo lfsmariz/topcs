@@ -1,0 +1,61 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Player {
+  id BigInt @default(autoincrement()) @id
+  username String @unique
+  email String
+  password String
+  playerTopics PlayersTopics[]
+  playerArticles PlayersArticles[]
+  createdAt DateTime
+  UpdatedAt DateTime
+  Deleted Boolean
+}
+
+model Topic {
+  id BigInt @default(autoincrement()) @id
+  topicName String
+  playerTopics PlayersTopics[]
+  createdAt DateTime
+  UpdatedAt DateTime
+  Deleted Boolean
+}
+
+model Article {
+  id BigInt @id
+  link String 
+  playerArticles PlayersArticles[]
+}
+
+model PlayersTopics{
+  player Player @relation(fields: [playerId], references: [id])
+  playerId BigInt
+  topic Topic @relation(fields: [topicId], references: [id])
+  topicId BigInt
+  points Int
+  addAt DateTime
+  removedAt DateTime?
+
+  @@id([playerId, topicId])
+}
+
+model PlayersArticles{
+  player Player @relation(fields: [playerId], references: [id])
+  playerId BigInt
+  article Article @relation(fields: [articleId], references: [id])
+  articleId BigInt
+  read Boolean
+  readAt DateTime?
+
+  @@id([playerId, articleId])
+}
