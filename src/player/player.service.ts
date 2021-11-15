@@ -1,27 +1,50 @@
+import { Prisma } from '@prisma/client';
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
-import { CreatePlayerDto } from './dto/create-player.dto';
-import { UpdatePlayerDto } from './dto/update-player.dto';
+import { CreatePlayerResponseDto } from './dto/create-player-response.dto';
+import { CreatePlayerRequestDto } from './dto/create-player-request.dto';
 
 @Injectable()
 export class PlayerService {
-  create(createPlayerDto: CreatePlayerDto) {
-    return 'This action adds a new player';
-  }
+  constructor(private prismaService: PrismaService) {}
 
-  findAll() {
-    return `This action returns all player`;
-  }
+  async createPlayer(
+    playerInput: CreatePlayerRequestDto,
+  ): Promise<CreatePlayerResponseDto> {
+    const nowDate = new Date(Date.now());
+    const nPlayer: Prisma.PlayerCreateInput = {
+      ...playerInput,
+      createdAt: nowDate,
+      updatedAt: nowDate,
+      deleted: false,
+    };
+    const savedPlayer = await this.prismaService.player.create({
+      data: {
+        playerTopics: {
+          create: [],
+        },
+        playerArticles: {
+          create: [],
+        },
+        ...nPlayer,
+      },
+    });
 
-  findOne(id: number) {
-    return `This action returns a #${id} player`;
-  }
+    const savedTopics = await this.prismaService.topic.findMany({
+      where: {
+        playerTopics: {
+          some: { playerId: savedPlayer.id },
+        },
+      },
+    });
 
-  update(id: number, updatePlayerDto: UpdatePlayerDto) {
-    return `This action updates a #${id} player`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} player`;
+    const savedArticle = await this.prismaService.article.findMany({
+      where: {
+        playerArticles: {
+          some: { playerId: savedPlayer.id },
+        },
+      },
+    });
+    return new CreatePlayerResponseDto(savedPlayer, savedTopics, savedArticle);
   }
 }

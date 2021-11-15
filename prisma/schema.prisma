@@ -11,37 +11,37 @@ datasource db {
 }
 
 model Player {
-  id BigInt @default(autoincrement()) @id
+  id Int @default(autoincrement()) @id
   username String @unique
   email String
   password String
   playerTopics PlayersTopics[]
   playerArticles PlayersArticles[]
   createdAt DateTime
-  UpdatedAt DateTime
-  Deleted Boolean
+  updatedAt DateTime
+  deleted Boolean
 }
 
 model Topic {
-  id BigInt @default(autoincrement()) @id
+  id Int @default(autoincrement()) @id
   topicName String
   playerTopics PlayersTopics[]
   createdAt DateTime
-  UpdatedAt DateTime
-  Deleted Boolean
+  updatedAt DateTime
+  deleted Boolean
 }
 
 model Article {
-  id BigInt @id
+  id Int @id
   link String 
   playerArticles PlayersArticles[]
 }
 
 model PlayersTopics{
   player Player @relation(fields: [playerId], references: [id])
-  playerId BigInt
+  playerId Int
   topic Topic @relation(fields: [topicId], references: [id])
-  topicId BigInt
+  topicId Int
   points Int
   addAt DateTime
   removedAt DateTime?
@@ -51,9 +51,9 @@ model PlayersTopics{
 
 model PlayersArticles{
   player Player @relation(fields: [playerId], references: [id])
-  playerId BigInt
+  playerId Int
   article Article @relation(fields: [articleId], references: [id])
-  articleId BigInt
+  articleId Int
   read Boolean
   readAt DateTime?
 
