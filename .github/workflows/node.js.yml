@@ -26,6 +26,11 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node_version }}
+    
+    - name: npm install, build and test
+      run: |
+        npm install
+        npm test
         
     - name: Coverage Comment
       uses: dkershner6/jest-coverage-commenter-action@v1
