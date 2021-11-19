@@ -18,7 +18,7 @@ jobs:
         node_version: ['16']
         os: [ubuntu-latest]
     env:
-      DATABASE_URL: sample
+      DATABASE_URL: postgresql://test:test@localhost:5432/test?schema=public
 
     steps:
     - uses: actions/checkout@v1
