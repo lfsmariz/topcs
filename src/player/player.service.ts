@@ -7,12 +7,12 @@ import {
   Topic,
 } from '@prisma/client';
 import { Injectable } from '@nestjs/common';
-import { PrismaService } from 'src/prisma.service';
 import { FullPlayerResponseDto } from './dto/player-response.dto';
 import {
   CreatePlayerRequestDto,
   LoginPlayerRequestDto,
 } from './dto/player-request.dto';
+import { PrismaService } from '../prisma.service';
 
 @Injectable()
 export class PlayerService {
