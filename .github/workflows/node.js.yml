@@ -36,7 +36,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        test-command: "npm run test:cov"
+        test-command: "npm run test"
         
     - name: Coverage Minimum 80%
       uses: dkershner6/jest-coverage-commenter-action@v1
