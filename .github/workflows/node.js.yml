@@ -26,15 +26,18 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node_version }}
-    
-    - name: npm install and check coverage
+        
+    - name: npm install
       run: |
         npm install
-        npm run test:cov
-        exit $?
         
-    - name: Coverage Comment
+    - name: Coverage Comment Pr
       uses: dkershner6/jest-coverage-commenter-action@v1
       with:
         github_token: "${{ secrets.GITHUB_TOKEN }}"
         test_command: "npm run test:cov"
+    
+    - name: check minimum 80% coverage
+      run: |
+        npm run test:cov
+        exit $?
