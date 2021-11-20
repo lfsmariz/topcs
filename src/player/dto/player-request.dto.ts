@@ -3,3 +3,8 @@ export class CreatePlayerRequestDto {
   password: string;
   email: string;
 }
+
+export class LoginPlayerRequestDto {
+  password: string;
+  username: string;
+}

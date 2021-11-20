@@ -1,8 +1,18 @@
-import { Prisma } from '@prisma/client';
+import {
+  Article,
+  Player,
+  PlayersArticles,
+  PlayersTopics,
+  Prisma,
+  Topic,
+} from '@prisma/client';
 import { Injectable } from '@nestjs/common';
-import { PrismaService } from 'src/prisma.service';
-import { CreatePlayerResponseDto } from './dto/create-player-response.dto';
-import { CreatePlayerRequestDto } from './dto/create-player-request.dto';
+import { FullPlayerResponseDto } from './dto/player-response.dto';
+import {
+  CreatePlayerRequestDto,
+  LoginPlayerRequestDto,
+} from './dto/player-request.dto';
+import { PrismaService } from '../prisma.service';
 
 @Injectable()
 export class PlayerService {
@@ -10,7 +20,7 @@ export class PlayerService {
 
   async createPlayer(
     playerInput: CreatePlayerRequestDto,
-  ): Promise<CreatePlayerResponseDto> {
+  ): Promise<FullPlayerResponseDto> {
     const nowDate = new Date(Date.now());
     const nPlayer: Prisma.PlayerCreateInput = {
       ...playerInput,
@@ -28,23 +38,62 @@ export class PlayerService {
         },
         ...nPlayer,
       },
-    });
-
-    const savedTopics = await this.prismaService.topic.findMany({
-      where: {
+      include: {
         playerTopics: {
-          some: { playerId: savedPlayer.id },
+          include: {
+            topic: true,
+          },
+        },
+        playerArticles: {
+          include: {
+            article: true,
+          },
         },
       },
     });
 
-    const savedArticle = await this.prismaService.article.findMany({
+    return new FullPlayerResponseDto(savedPlayer);
+  }
+
+  async loginPlayer(
+    playerInput: LoginPlayerRequestDto,
+  ): Promise<FullPlayerResponseDto> {
+    const player = await this.prismaService.player.findUnique({
       where: {
+        username: playerInput.username,
+      },
+      include: {
+        playerTopics: {
+          include: {
+            topic: true,
+          },
+        },
         playerArticles: {
-          some: { playerId: savedPlayer.id },
+          include: {
+            article: true,
+          },
         },
       },
     });
-    return new CreatePlayerResponseDto(savedPlayer, savedTopics, savedArticle);
+
+    this.validatePlayer(player, playerInput.password);
+
+    return new FullPlayerResponseDto(player);
+  }
+
+  private validatePlayer(
+    player: Player & {
+      playerTopics: (PlayersTopics & {
+        topic: Topic;
+      })[];
+      playerArticles: (PlayersArticles & {
+        article: Article;
+      })[];
+    },
+    pass: string,
+  ) {
+    if (player === null || player.password !== pass) {
+      throw new Error('usuário ou senha incorreta');
+    }
   }
 }
