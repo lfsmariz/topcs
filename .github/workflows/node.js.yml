@@ -33,15 +33,8 @@ jobs:
         
     - name: Coverage Minimum 80%
       uses: dkershner6/jest-coverage-commenter-action@v1
+      uses: ziishaned/jest-reporter-action@v0.0.1
       with:
         github_token: "${{ secrets.GITHUB_TOKEN }}"
         test_command: "npm run test:cov"
-        
-  commentDefault:
-    runs-on: ubuntu-latest
-    if: "!contains(github.event.head_commit.message, '[skip ci]')"
-    steps:
-      - uses: actions/checkout@v1
-      - uses: artiomtr/jest-coverage-report-action@v2.0-rc.5
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+
