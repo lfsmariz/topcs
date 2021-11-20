@@ -27,17 +27,14 @@ jobs:
       with:
         node-version: ${{ matrix.node_version }}
     
-    - name: npm install
+    - name: npm install and check coverage
       run: |
         npm install
+        npm run test:cov
+        exit $?
         
-  coverage:
-    runs-on: ubuntu-latest
-    if: "!contains(github.event.head_commit.message, '[skip ci]')"
-    steps:
-      - uses: actions/checkout@v1
-      - uses: artiomtr/jest-coverage-report-action@v2.0-rc.5
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          threshold: 80
-          test-script: npm run test:cov
+    - name: Coverage Comment
+      uses: dkershner6/jest-coverage-commenter-action@v1
+      with:
+        github_token: "${{ secrets.GITHUB_TOKEN }}"
+        test_command: "npm run test:cov"
