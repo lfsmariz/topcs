@@ -10,7 +10,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
 model Player {
   id Int @default(autoincrement()) @id
   username String @unique
