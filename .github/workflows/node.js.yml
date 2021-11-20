@@ -30,6 +30,12 @@ jobs:
     - name: Install Dependencies
       run: |
         npm install
+
+    - name: Report Coverage
+      uses: ziishaned/jest-reporter-action@v0.0.1
+      with:
+        github_token: "${{ secrets.GITHUB_TOKEN }}"
+        test_command: "npm run test:cov"
         
     - name: Coverage Minimum 80%
       uses: dkershner6/jest-coverage-commenter-action@v1
@@ -37,9 +43,5 @@ jobs:
         github_token: "${{ secrets.GITHUB_TOKEN }}"
         test_command: "npm run test:cov"
 
-    - name: Report Coverage
-      uses: ziishaned/jest-reporter-action@v0.0.1
-      with:
-        github_token: "${{ secrets.GITHUB_TOKEN }}"
-        test_command: "npm run test:cov"
+
 
