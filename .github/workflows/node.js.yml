@@ -32,9 +32,11 @@ jobs:
         npm install
 
     - name: Report Coverage
-      uses: ziishaned/jest-reporter-action@v0.0.1
+      uses: mattallty/jest-github-action@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        github-token: "${{ secrets.GITHUB_TOKEN }}"
+        test-command: "npm run test:cov"
         
     - name: Coverage Minimum 80%
       uses: dkershner6/jest-coverage-commenter-action@v1
