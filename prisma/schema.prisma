@@ -27,15 +27,18 @@ model Topic {
   id Int @default(autoincrement()) @id
   topicName String
   playerTopics PlayersTopics[]
+  topicArticles Article[]
   createdAt DateTime
   updatedAt DateTime
   deleted Boolean
 }
 
 model Article {
-  id Int @id
+  id Int @default(autoincrement())@id
   link String 
   playerArticles PlayersArticles[]
+  topic Topic @relation(fields: [topicId], references: [id])
+  topicId Int
 }
 
 model PlayersTopics{

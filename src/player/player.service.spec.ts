@@ -5,7 +5,6 @@ import {
   CreatePlayerRequestDto,
   LoginPlayerRequestDto,
 } from './dto/player-request.dto';
-import { FullPlayerResponseDto } from './dto/player-response.dto';
 import { PlayerService } from './player.service';
 
 describe('PlayerService', () => {
@@ -70,6 +69,7 @@ describe('PlayerService', () => {
       updatedAt: new Date(1000),
       deleted: false,
     };
+
     const inputPlayer = new LoginPlayerRequestDto();
     const outputPlayer = {
       createdAt: new Date(1000),

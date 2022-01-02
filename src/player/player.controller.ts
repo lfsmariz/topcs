@@ -10,7 +10,7 @@ import { FullPlayerResponseDto } from './dto/player-response.dto';
 export class PlayerController {
   constructor(private readonly playerService: PlayerService) {}
 
-  @Post()
+  @Post('create')
   async create(
     @Body() createPlayerDto: CreatePlayerRequestDto,
   ): Promise<FullPlayerResponseDto> {

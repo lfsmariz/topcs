@@ -6,8 +6,8 @@ export class FullPlayerResponseDto {
   username: string;
   email: string;
   createdAt: string | Date;
-  playerTopics?: (PlayersTopics & { topic: Topic })[];
-  playerArticles?: (PlayersArticles & { article: Article })[];
+  playerTopics?: PlayersTopics[];
+  playerArticles?: PlayersArticles[];
 
   constructor(
     player: Player & {
