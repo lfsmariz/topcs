@@ -1,5 +1,4 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { Player, Prisma } from '@prisma/client';
 import { PrismaService } from '../prisma.service';
 import { CreatePlayerRequestDto } from './dto/player-request.dto';
 import { FullPlayerResponseDto } from './dto/player-response.dto';
@@ -57,7 +56,7 @@ describe('PlayerController', () => {
     await expect(expected).resolves.toEqual(outputPlayer);
   });
 
-  it('should create a user', async () => {
+  it('should login a user', async () => {
     // Arrange
     const player = {
       id: 1,
