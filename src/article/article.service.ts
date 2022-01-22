@@ -11,13 +11,13 @@ export class ArticleService {
   ) {}
 
   async readArticle(dataArticle: ReadArticleRequestDto): Promise<any> {
+    const nowDate = new Date(Date.now());
+
     const player = await this.prismaService.player.findUnique({
       where: {
         username: dataArticle.player,
       },
     });
-
-    console.log({ player });
 
     const update = await this.prismaService.player.update({
       where: { id: player.id },
@@ -30,7 +30,10 @@ export class ArticleService {
                 playerId: player.id,
               },
             },
-            data: { read: true },
+            data: { 
+              read: true,
+              readAt: nowDate
+            },
           },
         },
         playerTopics: {
