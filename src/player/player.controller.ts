@@ -1,10 +1,13 @@
-import { Controller, Post, Body } from '@nestjs/common';
+import { Controller, Post, Body, Get, Param } from '@nestjs/common';
 import { PlayerService } from './player.service';
 import {
   CreatePlayerRequestDto,
   LoginPlayerRequestDto,
 } from './dto/player-request.dto';
-import { FullPlayerResponseDto } from './dto/player-response.dto';
+import {
+  FullPlayerResponseDto,
+  GetScoreResponseDto,
+} from './dto/player-response.dto';
 
 @Controller('player')
 export class PlayerController {
@@ -22,5 +25,12 @@ export class PlayerController {
     @Body() loginPlayerReqDto: LoginPlayerRequestDto,
   ): Promise<FullPlayerResponseDto> {
     return this.playerService.loginPlayer(loginPlayerReqDto);
+  }
+
+  @Get('score/:player')
+  async getScore(
+    @Param('player') player: string,
+  ): Promise<GetScoreResponseDto> {
+    return this.playerService.getScore(player);
   }
 }
