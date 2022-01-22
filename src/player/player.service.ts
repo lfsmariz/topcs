@@ -7,7 +7,10 @@ import {
   Topic,
 } from '@prisma/client';
 import { Injectable } from '@nestjs/common';
-import { FullPlayerResponseDto } from './dto/player-response.dto';
+import {
+  FullPlayerResponseDto,
+  GetScoreResponseDto,
+} from './dto/player-response.dto';
 import {
   CreatePlayerRequestDto,
   LoginPlayerRequestDto,
@@ -79,6 +82,29 @@ export class PlayerService {
     this.validatePlayer(player, playerInput.password);
 
     return new FullPlayerResponseDto(player);
+  }
+
+  async getScore(player: string): Promise<GetScoreResponseDto> {
+    const playerTopics = await this.prismaService.playersTopics.findMany({
+      orderBy: {
+        points: 'desc',
+      },
+      take: 10,
+      include: {
+        topic: {
+          select: {
+            topicName: true,
+          },
+        },
+      },
+      where: {
+        player: {
+          username: player,
+        },
+      },
+    });
+
+    return new GetScoreResponseDto(playerTopics);
   }
 
   private validatePlayer(

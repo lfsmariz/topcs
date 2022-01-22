@@ -26,3 +26,30 @@ export class FullPlayerResponseDto {
     this.playerArticles = player.playerArticles;
   }
 }
+
+type PointsByTopic = {
+  playerId: number;
+  topic: Pick<Topic, 'id' | 'topicName'>;
+  points: number;
+  addAt: Date;
+  removedAt: Date | null;
+};
+
+export class GetScoreResponseDto {
+  score: PointsByTopic[];
+
+  constructor(
+    playerTopics: (PlayersTopics & { topic: { topicName: string } })[],
+  ) {
+    this.score = playerTopics.map((pt) => ({
+      points: pt.points,
+      addAt: pt.addAt,
+      removedAt: pt.removedAt,
+      topic: {
+        id: pt.topicId,
+        topicName: pt.topic.topicName,
+      },
+      playerId: pt.playerId,
+    }));
+  }
+}
