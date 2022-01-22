@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { PrismaService } from 'src/prisma.service';
-import { RestClientService } from 'src/restclient/restclient.service';
+import { PrismaService } from '../prisma.service';
+import { RestClientService } from '../restclient/restclient.service';
 import { ReadArticleRequestDto } from './dto/article-request.dto';
 
 @Injectable()
@@ -30,9 +30,9 @@ export class ArticleService {
                 playerId: player.id,
               },
             },
-            data: { 
+            data: {
               read: true,
-              readAt: nowDate
+              readAt: nowDate,
             },
           },
         },
