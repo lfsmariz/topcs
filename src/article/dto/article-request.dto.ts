@@ -1,5 +1,5 @@
 export class ReadArticleRequestDto {
-    player: string;
-    idTopic: number;
-    idArticle: number;
-  }
+  player: string;
+  idTopic: number;
+  idArticle: number;
+}
