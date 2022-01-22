@@ -44,11 +44,14 @@ export class ArticleService {
                 playerId: player.id,
               },
             },
-            data: { points: +10 },
+            data: {
+              points: {
+                increment: 10,
+              },
+            },
           },
         },
       },
-
       include: {
         playerArticles: true,
         playerTopics: true,
