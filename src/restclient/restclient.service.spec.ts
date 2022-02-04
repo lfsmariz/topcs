@@ -1,7 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { RestClientService } from './restclient.service';
 import axios, { AxiosResponse } from 'axios';
-import { error } from 'console';
 
 jest.mock('axios');
 
@@ -66,7 +65,7 @@ describe('RestClientService', () => {
 
     const inputTheme = 'testTheme';
 
-    const output = service.requestVideos(inputTheme);
+    const output = service.requestYoutubeVideos(inputTheme);
 
     const expected = [
       'https://www.youtube.com/watch?v=XQxitgyZ_S4',
@@ -96,7 +95,7 @@ describe('RestClientService', () => {
 
     const inputTheme = 'testTheme';
 
-    const output = service.requestVideos(inputTheme);
+    const output = service.requestYoutubeVideos(inputTheme);
 
     //Assert
     await expect(output).resolves.toEqual([]);

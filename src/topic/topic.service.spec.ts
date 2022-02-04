@@ -3,7 +3,7 @@ import { RestClientService } from '../restclient/restclient.service';
 import { PrismaService } from '../prisma.service';
 import { TopicService } from './topic.service';
 import { CreateTopicRequestDto } from './dto/topic-request.dto';
-import { Player, Prisma, Topic } from '@prisma/client';
+import { Article, Player, Prisma, Topic } from '@prisma/client';
 
 describe('TopicService', () => {
   let service: TopicService;
@@ -89,7 +89,7 @@ describe('TopicService', () => {
 
     jest
       .spyOn(restClient, 'requestVideos')
-      .mockImplementation(() => urls as unknown as Promise<string[]>);
+      .mockImplementation(() => urls as unknown as Promise<Article[]>);
 
     jest
       .spyOn(prisma.playersArticles, 'createMany')
