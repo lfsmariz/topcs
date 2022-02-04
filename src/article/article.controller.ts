@@ -12,7 +12,7 @@ export class ArticleController {
   }
 
   @Get('article')
-  async getTopcs(
+  async getArticle(
     @Param('idPlayer') idPlayer: number,
     @Param('idTopic') idTopic: number,
   ): Promise<any> {
