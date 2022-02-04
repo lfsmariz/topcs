@@ -1,4 +1,4 @@
-import { Body, Controller, Put } from '@nestjs/common';
+import { Body, Controller, Put, Get, Param } from '@nestjs/common';
 import { ArticleService } from './article.service';
 import { ReadArticleRequestDto } from './dto/article-request.dto';
 
@@ -10,4 +10,13 @@ export class ArticleController {
   async create(@Body() dataArticle: ReadArticleRequestDto): Promise<any> {
     return this.articleService.readArticle(dataArticle);
   }
+
+  @Get('article')
+  async getTopcs(
+    @Param('idPlayer') idPlayer: number,
+    @Param('idTopic') idTopic: number,
+  ): Promise<any> {
+    return this.articleService.getArticle(idPlayer, idTopic);
+  }
+
 }

@@ -68,4 +68,18 @@ export class TopicService {
 
     return savedTopic;
   }
+
+  async getTopcs(idPlayer: number,): Promise<any> {
+    const topcs = await this.prismaService.playersTopics.findMany({
+      where: {
+        playerId: idPlayer,
+      },
+      include: {
+        topic: true,
+      }
+    });
+  
+    return topcs;
+  }
+
 }

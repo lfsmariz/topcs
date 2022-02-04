@@ -1,10 +1,6 @@
 import {
-  Article,
   Player,
-  PlayersArticles,
-  PlayersTopics,
   Prisma,
-  Topic,
 } from '@prisma/client';
 import { Injectable } from '@nestjs/common';
 import {
@@ -17,14 +13,7 @@ import {
 } from './dto/player-request.dto';
 import { PrismaService } from '../prisma.service';
 
-type PlayerContentQueryResult = Player & {
-  playerTopics: (PlayersTopics & {
-    topic: Topic;
-  })[];
-  playerArticles: (PlayersArticles & {
-    article: Article;
-  })[];
-};
+type PlayerContentQueryResult = Player;
 
 @Injectable()
 export class PlayerService {
@@ -73,18 +62,6 @@ export class PlayerService {
     const playerContent = await this.prismaService.player.findUnique({
       where: {
         username: playerInput.username,
-      },
-      include: {
-        playerTopics: {
-          include: {
-            topic: true,
-          },
-        },
-        playerArticles: {
-          include: {
-            article: true,
-          },
-        },
       },
     });
 
