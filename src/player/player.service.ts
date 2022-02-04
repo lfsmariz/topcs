@@ -17,6 +17,15 @@ import {
 } from './dto/player-request.dto';
 import { PrismaService } from '../prisma.service';
 
+type PlayerContentQueryResult = Player & {
+  playerTopics: (PlayersTopics & {
+    topic: Topic;
+  })[];
+  playerArticles: (PlayersArticles & {
+    article: Article;
+  })[];
+};
+
 @Injectable()
 export class PlayerService {
   constructor(private prismaService: PrismaService) {}
@@ -61,7 +70,7 @@ export class PlayerService {
   async loginPlayer(
     playerInput: LoginPlayerRequestDto,
   ): Promise<FullPlayerResponseDto> {
-    const player = await this.prismaService.player.findUnique({
+    const playerContent = await this.prismaService.player.findUnique({
       where: {
         username: playerInput.username,
       },
@@ -79,9 +88,33 @@ export class PlayerService {
       },
     });
 
-    this.validatePlayer(player, playerInput.password);
+    this.validatePlayer(playerContent, playerInput.password);
 
-    return new FullPlayerResponseDto(player);
+    return playerContent;
+  }
+
+  async getContentFromPlayerUsername(
+    playerUsername: string,
+  ): Promise<FullPlayerResponseDto> {
+    const playerContent = await this.prismaService.player.findUnique({
+      where: {
+        username: playerUsername,
+      },
+      include: {
+        playerTopics: {
+          include: {
+            topic: true,
+          },
+        },
+        playerArticles: {
+          include: {
+            article: true,
+          },
+        },
+      },
+    });
+
+    return new FullPlayerResponseDto(playerContent);
   }
 
   async getScore(player: string): Promise<GetScoreResponseDto> {
@@ -107,17 +140,7 @@ export class PlayerService {
     return new GetScoreResponseDto(playerTopics);
   }
 
-  private validatePlayer(
-    player: Player & {
-      playerTopics: (PlayersTopics & {
-        topic: Topic;
-      })[];
-      playerArticles: (PlayersArticles & {
-        article: Article;
-      })[];
-    },
-    pass: string,
-  ) {
+  private validatePlayer(player: PlayerContentQueryResult, pass: string) {
     if (player === null || player.password !== pass) {
       throw new Error('usuário ou senha incorreta');
     }
