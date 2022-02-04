@@ -35,7 +35,10 @@ model Topic {
 
 model Article {
   id Int @default(autoincrement())@id
-  link String 
+  url String
+  title String
+  description String?
+  thumbnailUrl String?
   playerArticles PlayersArticles[]
   topic Topic @relation(fields: [topicId], references: [id])
   topicId Int
