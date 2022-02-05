@@ -1,4 +1,10 @@
-import { Player, PlayersTopics, Topic } from '@prisma/client';
+import {
+  Article,
+  Player,
+  PlayersArticles,
+  PlayersTopics,
+  Topic,
+} from '@prisma/client';
 
 export class FullPlayerResponseDto {
   id: number;
@@ -6,9 +12,7 @@ export class FullPlayerResponseDto {
   email: string;
   createdAt: string | Date;
 
-  constructor(
-    player: Player,
-  ) {
+  constructor(player: Player) {
     this.username = player.username;
     this.email = player.email;
     this.createdAt = player.createdAt;
@@ -38,6 +42,47 @@ export class GetScoreResponseDto {
         topicName: pt.topic.topicName,
       },
       playerId: pt.playerId,
+    }));
+  }
+}
+
+type ArticleResponse = {
+  id: number;
+  url: string;
+  title: string;
+  description: string;
+  thumbnailUrl: string;
+  read: boolean;
+  readAt: Date;
+  isVideo: boolean;
+  topic: {
+    id: number;
+    name: string;
+  };
+};
+
+export class GetArticlesFromPlayerResponseDto {
+  articles: ArticleResponse[];
+
+  constructor(
+    articlesQuery: (Article & {
+      playerArticles: PlayersArticles[];
+      topic: Topic;
+    })[],
+  ) {
+    this.articles = articlesQuery.map((aq) => ({
+      id: aq.id,
+      url: aq.url,
+      title: aq.title,
+      description: aq.description,
+      thumbnailUrl: aq.thumbnailUrl,
+      read: aq.playerArticles?.[0]?.read,
+      readAt: aq.playerArticles?.[0]?.readAt,
+      isVideo: aq.isVideo,
+      topic: {
+        id: aq.topic.id,
+        name: aq.topic.topicName,
+      },
     }));
   }
 }

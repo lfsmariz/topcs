@@ -27,11 +27,11 @@ export class PlayerController {
     return this.playerService.loginPlayer(loginPlayerReqDto);
   }
 
-  @Get('/:playerUsername')
-  async getContentFromPlayerUsername(
-    @Param() playerUsername: string,
-  ): Promise<FullPlayerResponseDto> {
-    return this.playerService.getContentFromPlayerUsername(playerUsername);
+  @Get(':idPlayer/articles')
+  async getArticlesFromPlayer(
+    @Param('idPlayer') idPlayer: number,
+  ): Promise<any> {
+    return this.playerService.getArticlesFromPlayer(idPlayer);
   }
 
   @Get('score/:player')

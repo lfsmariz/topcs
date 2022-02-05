@@ -60,23 +60,4 @@ export class ArticleService {
 
     return update;
   }
-
-  async getArticle(idPlayer: number, idTopic: number,): Promise<any> {
-    const articles = await this.prismaService.article.findMany({
-      where: {
-        topicId: idTopic,
-        playerArticles:  {
-          every: {
-            playerId: idPlayer
-          }
-        },
-      },
-      include: {
-        playerArticles: true
-      }
-    });
-  
-    return articles;
-  }
-
 }

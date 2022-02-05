@@ -1,10 +1,8 @@
-import {
-  Player,
-  Prisma,
-} from '@prisma/client';
+import { Player, Prisma } from '@prisma/client';
 import { Injectable } from '@nestjs/common';
 import {
   FullPlayerResponseDto,
+  GetArticlesFromPlayerResponseDto,
   GetScoreResponseDto,
 } from './dto/player-response.dto';
 import {
@@ -70,28 +68,22 @@ export class PlayerService {
     return playerContent;
   }
 
-  async getContentFromPlayerUsername(
-    playerUsername: string,
-  ): Promise<FullPlayerResponseDto> {
-    const playerContent = await this.prismaService.player.findUnique({
+  async getArticlesFromPlayer(idPlayer: number): Promise<any> {
+    const articles = await this.prismaService.article.findMany({
       where: {
-        username: playerUsername,
+        playerArticles: {
+          every: {
+            playerId: Number(idPlayer),
+          },
+        },
       },
       include: {
-        playerTopics: {
-          include: {
-            topic: true,
-          },
-        },
-        playerArticles: {
-          include: {
-            article: true,
-          },
-        },
+        playerArticles: true,
+        topic: true,
       },
     });
 
-    return new FullPlayerResponseDto(playerContent);
+    return new GetArticlesFromPlayerResponseDto(articles);
   }
 
   async getScore(player: string): Promise<GetScoreResponseDto> {
