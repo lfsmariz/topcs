@@ -3,7 +3,7 @@ import { Prisma } from '@prisma/client';
 import { RestClientService } from '../restclient/restclient.service';
 import { PrismaService } from '../prisma.service';
 import { CreateTopicRequestDto } from './dto/topic-request.dto';
-import { shuffle } from 'src/utils/shuffleArray';
+import { shuffle } from '../utils/shuffleArray';
 
 @Injectable()
 export class TopicService {

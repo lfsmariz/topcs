@@ -88,8 +88,12 @@ describe('TopicService', () => {
       );
 
     jest
-      .spyOn(restClient, 'requestVideos')
+      .spyOn(restClient, 'requestYoutubeVideos')
       .mockImplementation(() => urls as unknown as Promise<Article[]>);
+    
+    jest
+      .spyOn(restClient, 'requestDEVCommunityArticles')
+      .mockImplementation(() => [] as unknown as Promise<Article[]>);
 
     jest
       .spyOn(prisma.playersArticles, 'createMany')
