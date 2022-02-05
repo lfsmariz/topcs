@@ -65,7 +65,7 @@ export class PlayerService {
 
     this.validatePlayer(playerContent, playerInput.password);
 
-    return playerContent;
+    return new FullPlayerResponseDto(playerContent);
   }
 
   async getArticlesFromPlayer(idPlayer: number): Promise<any> {
