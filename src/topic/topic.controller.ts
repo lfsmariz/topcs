@@ -11,11 +11,8 @@ export class TopicController {
     return this.topicService.createTopic(createTopicDto);
   }
 
-  @Get('topic')
-  async getTopcs(
-    @Param('idPlayer') idPlayer: number,
-  ): Promise<any> {
-    return this.topicService.getTopcs(idPlayer);
+  @Get(':idPlayer')
+  async getTopics(@Param('idPlayer') idPlayer: number): Promise<any> {
+    return this.topicService.getTopics(idPlayer);
   }
-
 }
