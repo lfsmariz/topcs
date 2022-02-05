@@ -39,6 +39,7 @@ model Article {
   title String
   description String?
   thumbnailUrl String?
+  isVideo Boolean?
   playerArticles PlayersArticles[]
   topic Topic @relation(fields: [topicId], references: [id])
   topicId Int
