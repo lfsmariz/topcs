@@ -3,7 +3,8 @@ import { RestClientService } from '../restclient/restclient.service';
 import { PrismaService } from '../prisma.service';
 import { TopicService } from './topic.service';
 import { CreateTopicRequestDto } from './dto/topic-request.dto';
-import { Article, Player, Prisma, Topic } from '@prisma/client';
+import { Article, Player, Prisma, Topic } from '.prisma/client';
+
 
 describe('TopicService', () => {
   let service: TopicService;
@@ -82,6 +83,8 @@ describe('TopicService', () => {
 
     let youtubeArticle: Article[] = [
       {
+        id: 1,
+        topicId: 1,
         url: 'https://www.youtube.com/watch?v=uYanD5amVYY',
         title: 'Test',
         description: 'Apenas um test',

@@ -36,11 +36,16 @@ describe('TopicController', () => {
       topicArticles: [
         {
           id: 1,
-          link: 'https://www.youtube.com/watch?v=uYanD5amVYY',
+          url: 'https://www.youtube.com/watch?v=uYanD5amVYY',
+          title: 'Test',
+          description: 'Apenas um test',
+          thumbnailUrl: '',
+          isVideo: true,
           topicId: 1,
         },
       ],
     };
+
     const inputTopic = new CreateTopicRequestDto();
 
     const outputTopic = {
@@ -52,7 +57,11 @@ describe('TopicController', () => {
       topicArticles: [
         {
           id: 1,
-          link: 'https://www.youtube.com/watch?v=uYanD5amVYY',
+          url: 'https://www.youtube.com/watch?v=uYanD5amVYY',
+          title: 'Test',
+          description: 'Apenas um test',
+          thumbnailUrl: '',
+          isVideo: true,
           topicId: 1,
         },
       ],
