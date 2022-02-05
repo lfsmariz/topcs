@@ -29,6 +29,7 @@ export class RestClientService {
         title: e.snippet.title,
         description: e.snippet.description,
         thumbnailUrl: e.snippet.thumbnails.high.url,
+        isVideo: true,
       }));
     } catch (error) {
       console.error(error);
@@ -60,6 +61,7 @@ export class RestClientService {
         title: article?.title || '',
         description: article?.description || '',
         thumbnailUrl: article?.cover_image || '',
+        isVideo: false,
       }));
     } catch (error) {
       console.error(error);
