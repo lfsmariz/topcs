@@ -100,6 +100,9 @@ export class PlayerService {
         },
       },
       where: {
+        points: {
+          gt: 0,
+        },
         player: {
           username: player,
         },
