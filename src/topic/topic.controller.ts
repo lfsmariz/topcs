@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post, Param } from '@nestjs/common';
 import { CreateTopicRequestDto } from './dto/topic-request.dto';
 import { TopicService } from './topic.service';
 
@@ -11,8 +11,8 @@ export class TopicController {
     return this.topicService.createTopic(createTopicDto);
   }
 
-  // @Get('all')
-  // async getAll(@Body() getTopicDto: CreateTopicRequestDto): Promise<any> {
-  //   return this.topicService.getTopics(getTopicDto);
-  // }
+  @Get(':idPlayer')
+  async getTopics(@Param('idPlayer') idPlayer: number): Promise<any> {
+    return this.topicService.getTopics(Number(idPlayer));
+  }
 }

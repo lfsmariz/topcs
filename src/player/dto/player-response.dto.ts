@@ -1,29 +1,22 @@
-import { Player, PlayersArticles, PlayersTopics, Topic } from '@prisma/client';
-import { Article } from 'src/article/entities/article.entity';
+import {
+  Article,
+  Player,
+  PlayersArticles,
+  PlayersTopics,
+  Topic,
+} from '@prisma/client';
 
 export class FullPlayerResponseDto {
   id: number;
   username: string;
   email: string;
   createdAt: string | Date;
-  playerTopics?: PlayersTopics[];
-  playerArticles?: PlayersArticles[];
 
-  constructor(
-    player: Player & {
-      playerTopics: (PlayersTopics & {
-        topic: Topic;
-      })[];
-      playerArticles: (PlayersArticles & {
-        article: Article;
-      })[];
-    },
-  ) {
+  constructor(player: Player) {
+    this.id = player.id;
     this.username = player.username;
     this.email = player.email;
     this.createdAt = player.createdAt;
-    this.playerTopics = player.playerTopics;
-    this.playerArticles = player.playerArticles;
   }
 }
 
@@ -50,6 +43,47 @@ export class GetScoreResponseDto {
         topicName: pt.topic.topicName,
       },
       playerId: pt.playerId,
+    }));
+  }
+}
+
+type ArticleResponse = {
+  id: number;
+  url: string;
+  title: string;
+  description: string;
+  thumbnailUrl: string;
+  read: boolean;
+  readAt: Date;
+  isVideo: boolean;
+  topic: {
+    id: number;
+    name: string;
+  };
+};
+
+export class GetArticlesFromPlayerResponseDto {
+  articles: ArticleResponse[];
+
+  constructor(
+    articlesQuery: (Article & {
+      playerArticles: PlayersArticles[];
+      topic: Topic;
+    })[],
+  ) {
+    this.articles = articlesQuery.map((aq) => ({
+      id: aq.id,
+      url: aq.url,
+      title: aq.title,
+      description: aq.description,
+      thumbnailUrl: aq.thumbnailUrl,
+      read: aq.playerArticles?.[0]?.read,
+      readAt: aq.playerArticles?.[0]?.readAt,
+      isVideo: aq.isVideo,
+      topic: {
+        id: aq.topic.id,
+        name: aq.topic.topicName,
+      },
     }));
   }
 }

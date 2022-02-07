@@ -1,7 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { RestClientService } from './restclient.service';
 import axios, { AxiosResponse } from 'axios';
-import { error } from 'console';
 
 jest.mock('axios');
 
@@ -39,13 +38,14 @@ describe('RestClientService', () => {
             kind: 'youtube#video',
             videoId: 'XQxitgyZ_S4',
           },
-        },
-        {
-          kind: 'youtube#searchResult',
-          etag: 'iGpdOWXbc3dcc7njROlrQD3UPz4',
-          id: {
-            kind: 'youtube#video',
-            videoId: 'aJR7f45dBNs',
+          snippet: {
+            title: 'Test',
+            description: 'test',
+            thumbnails: {
+              high: {
+                url: 'a',
+              },
+            },
           },
         },
       ],
@@ -66,11 +66,16 @@ describe('RestClientService', () => {
 
     const inputTheme = 'testTheme';
 
-    const output = service.requestVideos(inputTheme);
+    const output = service.requestYoutubeVideos(inputTheme);
 
     const expected = [
-      'https://www.youtube.com/watch?v=XQxitgyZ_S4',
-      'https://www.youtube.com/watch?v=aJR7f45dBNs',
+      {
+        url: 'https://www.youtube.com/watch?v=XQxitgyZ_S4',
+        title: 'Test',
+        description: 'test',
+        thumbnailUrl: 'a',
+        isVideo: true,
+      },
     ];
 
     //Assert
@@ -96,7 +101,7 @@ describe('RestClientService', () => {
 
     const inputTheme = 'testTheme';
 
-    const output = service.requestVideos(inputTheme);
+    const output = service.requestYoutubeVideos(inputTheme);
 
     //Assert
     await expect(output).resolves.toEqual([]);

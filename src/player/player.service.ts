@@ -1,14 +1,8 @@
-import {
-  Article,
-  Player,
-  PlayersArticles,
-  PlayersTopics,
-  Prisma,
-  Topic,
-} from '@prisma/client';
+import { Player, Prisma } from '@prisma/client';
 import { Injectable } from '@nestjs/common';
 import {
   FullPlayerResponseDto,
+  GetArticlesFromPlayerResponseDto,
   GetScoreResponseDto,
 } from './dto/player-response.dto';
 import {
@@ -16,6 +10,8 @@ import {
   LoginPlayerRequestDto,
 } from './dto/player-request.dto';
 import { PrismaService } from '../prisma.service';
+
+type PlayerContentQueryResult = Player;
 
 @Injectable()
 export class PlayerService {
@@ -61,27 +57,33 @@ export class PlayerService {
   async loginPlayer(
     playerInput: LoginPlayerRequestDto,
   ): Promise<FullPlayerResponseDto> {
-    const player = await this.prismaService.player.findUnique({
+    const playerContent = await this.prismaService.player.findUnique({
       where: {
         username: playerInput.username,
       },
-      include: {
-        playerTopics: {
-          include: {
-            topic: true,
-          },
-        },
+    });
+
+    this.validatePlayer(playerContent, playerInput.password);
+
+    return new FullPlayerResponseDto(playerContent);
+  }
+
+  async getArticlesFromPlayer(idPlayer: number): Promise<any> {
+    const articles = await this.prismaService.article.findMany({
+      where: {
         playerArticles: {
-          include: {
-            article: true,
+          every: {
+            playerId: Number(idPlayer),
           },
         },
       },
+      include: {
+        playerArticles: true,
+        topic: true,
+      },
     });
 
-    this.validatePlayer(player, playerInput.password);
-
-    return new FullPlayerResponseDto(player);
+    return new GetArticlesFromPlayerResponseDto(articles);
   }
 
   async getScore(player: string): Promise<GetScoreResponseDto> {
@@ -98,6 +100,9 @@ export class PlayerService {
         },
       },
       where: {
+        points: {
+          gt: 0,
+        },
         player: {
           username: player,
         },
@@ -107,17 +112,7 @@ export class PlayerService {
     return new GetScoreResponseDto(playerTopics);
   }
 
-  private validatePlayer(
-    player: Player & {
-      playerTopics: (PlayersTopics & {
-        topic: Topic;
-      })[];
-      playerArticles: (PlayersArticles & {
-        article: Article;
-      })[];
-    },
-    pass: string,
-  ) {
+  private validatePlayer(player: PlayerContentQueryResult, pass: string) {
     if (player === null || player.password !== pass) {
       throw new Error('usuário ou senha incorreta');
     }

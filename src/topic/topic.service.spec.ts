@@ -3,7 +3,7 @@ import { RestClientService } from '../restclient/restclient.service';
 import { PrismaService } from '../prisma.service';
 import { TopicService } from './topic.service';
 import { CreateTopicRequestDto } from './dto/topic-request.dto';
-import { Player, Prisma, Topic } from '@prisma/client';
+import { Article, Player, Prisma, Topic } from '.prisma/client';
 
 describe('TopicService', () => {
   let service: TopicService;
@@ -36,7 +36,11 @@ describe('TopicService', () => {
       topicArticles: [
         {
           id: 1,
-          link: 'https://www.youtube.com/watch?v=uYanD5amVYY',
+          url: 'https://www.youtube.com/watch?v=uYanD5amVYY',
+          title: 'Test',
+          description: 'Apenas um test',
+          thumbnailUrl: '',
+          isVideo: true,
           topicId: 1,
         },
       ],
@@ -66,13 +70,27 @@ describe('TopicService', () => {
       topicArticles: [
         {
           id: 1,
-          link: 'https://www.youtube.com/watch?v=uYanD5amVYY',
+          url: 'https://www.youtube.com/watch?v=uYanD5amVYY',
+          title: 'Test',
+          description: 'Apenas um test',
+          thumbnailUrl: '',
+          isVideo: true,
           topicId: 1,
         },
       ],
     };
 
-    const urls = ['https://www.youtube.com/watch?v=uYanD5amVYY'];
+    const youtubeArticle: Article[] = [
+      {
+        id: 1,
+        topicId: 1,
+        url: 'https://www.youtube.com/watch?v=uYanD5amVYY',
+        title: 'Test',
+        description: 'Apenas um test',
+        thumbnailUrl: '',
+        isVideo: true,
+      },
+    ];
 
     //Act
     jest
@@ -88,12 +106,18 @@ describe('TopicService', () => {
       );
 
     jest
-      .spyOn(restClient, 'requestVideos')
-      .mockImplementation(() => urls as unknown as Promise<string[]>);
+      .spyOn(restClient, 'requestYoutubeVideos')
+      .mockImplementation(
+        () => youtubeArticle as unknown as Promise<Article[]>,
+      );
+
+    jest
+      .spyOn(restClient, 'requestDEVCommunityArticles')
+      .mockImplementation(() => [] as unknown as Promise<Article[]>);
 
     jest
       .spyOn(prisma.playersArticles, 'createMany')
-      .mockImplementation(() => urls as unknown as any);
+      .mockImplementation(() => youtubeArticle as unknown as any);
 
     //Assert
     await expect(service.createTopic(inputTopic)).resolves.toEqual(outputTopic);

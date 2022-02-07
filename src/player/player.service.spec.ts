@@ -40,8 +40,6 @@ describe('PlayerService', () => {
     const outputPlayer = {
       createdAt: new Date(1000),
       email: 'string',
-      playerArticles: undefined,
-      playerTopics: undefined,
       username: 'string',
     };
 
@@ -74,8 +72,6 @@ describe('PlayerService', () => {
     const outputPlayer = {
       createdAt: new Date(1000),
       email: 'string',
-      playerArticles: undefined,
-      playerTopics: undefined,
       username: 'string',
     };
 

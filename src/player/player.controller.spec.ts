@@ -29,8 +29,6 @@ describe('PlayerController', () => {
       username: 'string',
       email: 'string',
       createdAt: new Date(1000),
-      playerArticles: undefined,
-      playerTopics: undefined,
       deleted: false,
     };
     const inputPlayer = new CreatePlayerRequestDto();
@@ -39,8 +37,6 @@ describe('PlayerController', () => {
       username: 'string',
       email: 'string',
       createdAt: new Date(1000),
-      playerArticles: undefined,
-      playerTopics: undefined,
       deleted: false,
     };
 
@@ -63,8 +59,6 @@ describe('PlayerController', () => {
       username: 'string',
       email: 'string',
       createdAt: new Date(1000),
-      playerArticles: undefined,
-      playerTopics: undefined,
       deleted: false,
     };
     const inputPlayer = new CreatePlayerRequestDto();
@@ -73,8 +67,6 @@ describe('PlayerController', () => {
       username: 'string',
       email: 'string',
       createdAt: new Date(1000),
-      playerArticles: undefined,
-      playerTopics: undefined,
       deleted: false,
     };
 

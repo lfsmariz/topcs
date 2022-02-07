@@ -3,6 +3,7 @@ import { Prisma } from '@prisma/client';
 import { RestClientService } from '../restclient/restclient.service';
 import { PrismaService } from '../prisma.service';
 import { CreateTopicRequestDto } from './dto/topic-request.dto';
+import { shuffle } from '../utils/shuffleArray';
 
 @Injectable()
 export class TopicService {
@@ -20,13 +21,17 @@ export class TopicService {
       },
     });
 
-    const articles = await this.restClientService.requestVideos(
-      inputTopic.name,
-    );
+    const matchedYoutubeVideos =
+      await this.restClientService.requestYoutubeVideos(inputTopic.name);
 
-    const articleInpt = articles.map((e) => ({
-      link: e,
-    }));
+    const matchedDEVArticles =
+      await this.restClientService.requestDEVCommunityArticles(inputTopic.name);
+
+    const matchedDataShuffled = shuffle([
+      ...matchedYoutubeVideos,
+      ...matchedDEVArticles,
+    ]);
+
     const nTopic: Prisma.TopicCreateInput = {
       topicName: inputTopic.name,
       createdAt: nowDate,
@@ -45,7 +50,7 @@ export class TopicService {
           },
         },
         topicArticles: {
-          create: articleInpt,
+          create: matchedDataShuffled,
         },
       },
       include: {
@@ -62,5 +67,18 @@ export class TopicService {
     });
 
     return savedTopic;
+  }
+
+  async getTopics(idPlayer: number): Promise<any> {
+    const topcs = await this.prismaService.playersTopics.findMany({
+      where: {
+        playerId: idPlayer,
+      },
+      include: {
+        topic: true,
+      },
+    });
+
+    return topcs;
   }
 }
