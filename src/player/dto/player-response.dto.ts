@@ -13,6 +13,7 @@ export class FullPlayerResponseDto {
   createdAt: string | Date;
 
   constructor(player: Player) {
+    this.id = player.id;
     this.username = player.username;
     this.email = player.email;
     this.createdAt = player.createdAt;
