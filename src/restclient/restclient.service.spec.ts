@@ -43,10 +43,10 @@ describe('RestClientService', () => {
             description: 'test',
             thumbnails: {
               high: {
-                url: 'a'
-              }
-            }
-          }
+                url: 'a',
+              },
+            },
+          },
         },
       ],
     };
@@ -75,7 +75,7 @@ describe('RestClientService', () => {
         description: 'test',
         thumbnailUrl: 'a',
         isVideo: true,
-      }
+      },
     ];
 
     //Assert

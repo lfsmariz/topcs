@@ -5,7 +5,6 @@ import { TopicService } from './topic.service';
 import { CreateTopicRequestDto } from './dto/topic-request.dto';
 import { Article, Player, Prisma, Topic } from '.prisma/client';
 
-
 describe('TopicService', () => {
   let service: TopicService;
   let prisma: PrismaService;
@@ -81,7 +80,7 @@ describe('TopicService', () => {
       ],
     };
 
-    let youtubeArticle: Article[] = [
+    const youtubeArticle: Article[] = [
       {
         id: 1,
         topicId: 1,
@@ -90,7 +89,7 @@ describe('TopicService', () => {
         description: 'Apenas um test',
         thumbnailUrl: '',
         isVideo: true,
-      }
+      },
     ];
 
     //Act
@@ -108,8 +107,10 @@ describe('TopicService', () => {
 
     jest
       .spyOn(restClient, 'requestYoutubeVideos')
-      .mockImplementation(() => youtubeArticle as unknown as Promise<Article[]>);
-    
+      .mockImplementation(
+        () => youtubeArticle as unknown as Promise<Article[]>,
+      );
+
     jest
       .spyOn(restClient, 'requestDEVCommunityArticles')
       .mockImplementation(() => [] as unknown as Promise<Article[]>);
