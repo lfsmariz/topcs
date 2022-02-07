@@ -13,6 +13,6 @@ export class TopicController {
 
   @Get(':idPlayer')
   async getTopics(@Param('idPlayer') idPlayer: number): Promise<any> {
-    return this.topicService.getTopics(idPlayer);
+    return this.topicService.getTopics(Number(idPlayer));
   }
 }
